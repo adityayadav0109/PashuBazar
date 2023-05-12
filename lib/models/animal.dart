@@ -2,14 +2,14 @@ class Animal {
   final String name;
   final int price;
   final String description;
-  final List<int>? image;
+  final String? imageUrl;
   final String state;
 
   Animal({
     required this.name,
     required this.price,
     required this.description,
-    this.image,
+    required this.imageUrl,
     required this.state,
   });
 
@@ -18,7 +18,7 @@ class Animal {
       name: json['name'],
       price: json['price'],
       description: json['description'],
-      image: json['image'] != null ? List<int>.from(json['image']) : null,
+      imageUrl: json['imageUrl'],
       state: json['state'],
     );
   }
@@ -28,7 +28,7 @@ class Animal {
       'name': name,
       'price': price,
       'description': description,
-      'image': image,
+      'imageUrl': imageUrl,
       'state': state,
     };
   }

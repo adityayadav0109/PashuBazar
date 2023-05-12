@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pashubazar/models/animal.dart';
+import 'package:http/http.dart' as http;
 
 class SellPage extends StatefulWidget {
   @override
@@ -16,16 +16,55 @@ class _SellPageState extends State<SellPage> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
-  File? _image;
+  String? _imageUrl;
   String? _selectedState;
-  List<String> _stateNames = [    'Andhra Pradesh',    'Arunachal Pradesh',    'Assam',    'Bihar',    'Chhattisgarh',    'Goa',    'Gujarat',    'Haryana',    'Himachal Pradesh',    'Jharkhand',    'Karnataka',    'Kerala',    'Madhya Pradesh',    'Maharashtra',    'Manipur',    'Meghalaya',    'Mizoram',    'Nagaland',    'Odisha',    'Punjab',    'Rajasthan',    'Sikkim',    'Tamil Nadu',    'Telangana',    'Tripura',    'Uttar Pradesh',    'Uttarakhand',    'West Bengal'  ];
+  List<String> _stateNames = [
+    'Andhra Pradesh',
+    'Arunachal Pradesh',
+    'Assam',
+    'Bihar',
+    'Chhattisgarh',
+    'Goa',
+    'Gujarat',
+    'Haryana',
+    'Himachal Pradesh',
+    'Jharkhand',
+    'Karnataka',
+    'Kerala',
+    'Madhya Pradesh',
+    'Maharashtra',
+    'Manipur',
+    'Meghalaya',
+    'Mizoram',
+    'Nagaland',
+    'Odisha',
+    'Punjab',
+    'Rajasthan',
+    'Sikkim',
+    'Tamil Nadu',
+    'Telangana',
+    'Tripura',
+    'Uttar Pradesh',
+    'Uttarakhand',
+    'West Bengal'
+  ];
 
   void _pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
+      final response = await http.post(
+        Uri.parse('https://api.imgbb.com/1/upload'),
+        body: {
+          'key': 'YOUR_API_KEY',
+          'image': base64Encode(File(pickedFile.path).readAsBytesSync())
+        },
+      );
+      final data = json.decode(response.body);
+      if (data['status_code'] == 200) {
+        setState(() {
+          _imageUrl = data['data']['url'];
+        });
+      }
     }
   }
 
@@ -36,7 +75,7 @@ class _SellPageState extends State<SellPage> {
         price: int.parse(_priceController.text.trim()),
         description: _descriptionController.text.trim(),
         state: _selectedState!,
-        image: _image?.readAsBytesSync()?.toList(),
+        imageUrl: _imageUrl,
       );
 
       final prefs = await SharedPreferences.getInstance();
@@ -62,47 +101,41 @@ class _SellPageState extends State<SellPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Sell Animal'),
-        ),
-        body: SingleChildScrollView(
-        child: Padding(
-        padding: const EdgeInsets.all(16),
+        title: Text('Sell Animal'),
+    ),
+    body: SingleChildScrollView(
+    child: Padding(
+    padding: const EdgeInsets.all(16),
     child: Form(
     key: _formKey,
     child: Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-    if (_image != null)
-    Image.memory(
-    _image!.readAsBytesSync(),
-    fit: BoxFit.cover,
-    height: 200,
-    ),
-    ElevatedButton(
-    onPressed: () => _pickImage(ImageSource.gallery),
-    child: Text('Pick Image'),
-    ),
-    TextFormField(
-    controller: _nameController,
-    decoration: InputDecoration(labelText: 'Name'),
+           TextFormField(
+      controller: _nameController,
+      decoration: InputDecoration(
+        labelText: 'Animal Name',
+      ),
       validator: (value) {
-        if (value == null || value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please enter a name';
         }
         return null;
       },
     ),
-      SizedBox(height: 16),
+    SizedBox(height: 16),
       TextFormField(
         controller: _priceController,
-        decoration: InputDecoration(labelText: 'Price'),
         keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          labelText: 'Price',
+        ),
         validator: (value) {
-          if (value == null || value.isEmpty) {
+          if (value!.isEmpty) {
             return 'Please enter a price';
           }
           if (int.tryParse(value) == null) {
-            return 'Please enter a valid number';
+            return 'Please enter a valid price';
           }
           return null;
         },
@@ -110,31 +143,32 @@ class _SellPageState extends State<SellPage> {
       SizedBox(height: 16),
       TextFormField(
         controller: _descriptionController,
-        decoration: InputDecoration(labelText: 'Description'),
-        maxLines: null,
+        maxLines: 3,
+        decoration: InputDecoration(
+          labelText: 'Description',
+        ),
         validator: (value) {
-          if (value == null || value.isEmpty) {
+          if (value!.isEmpty) {
             return 'Please enter a description';
           }
           return null;
         },
       ),
       SizedBox(height: 16),
-      DropdownButtonFormField<String>(
+      DropdownButtonFormField(
         value: _selectedState,
         decoration: InputDecoration(
           labelText: 'State',
-          border: OutlineInputBorder(),
         ),
-        items: _stateNames.map((stateName) {
-          return DropdownMenuItem<String>(
-            value: stateName,
-            child: Text(stateName),
-          );
-        }).toList(),
+        items: _stateNames
+            .map((stateName) => DropdownMenuItem(
+          value: stateName,
+          child: Text(stateName),
+        ))
+            .toList(),
         onChanged: (value) {
           setState(() {
-            _selectedState = value;
+            _selectedState = value as String?;
           });
         },
         validator: (value) {
@@ -145,6 +179,16 @@ class _SellPageState extends State<SellPage> {
         },
       ),
       SizedBox(height: 16),
+      if (_imageUrl != null)
+        SizedBox(
+          height: 200,
+          child: Image.network(_imageUrl!),
+        ),
+      ElevatedButton(
+        onPressed: () => _pickImage(ImageSource.gallery),
+        child: Text('Pick Image'),
+      ),
+      SizedBox(height: 16),
       ElevatedButton(
         onPressed: _post,
         child: Text('Post'),
@@ -152,15 +196,8 @@ class _SellPageState extends State<SellPage> {
     ],
     ),
     ),
-        ),
-        ),
+    ),
+    ),
     );
   }
 }
-
-
-
-
-
-
-

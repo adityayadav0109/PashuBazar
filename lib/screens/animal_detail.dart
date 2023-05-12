@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:pashubazar/models/animal.dart';
 
@@ -9,8 +8,6 @@ class AnimalDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Uint8List imageBytes = animal.image != null ? Uint8List.fromList(animal.image!) : Uint8List(0);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(animal.name),
@@ -20,8 +17,8 @@ class AnimalDetailPage extends StatelessWidget {
           children: [
             Container(
               height: 300,
-              child: Image.memory(
-                imageBytes,
+              child: Image.network(
+                animal.imageUrl ??"https://www.cabq.gov/pets/news/before-you-surrender-your-pet/@@images/91c70fd1-adb1-44f8-9f58-8e16bcf64fdc.jpeg",
                 fit: BoxFit.cover,
               ),
             ),

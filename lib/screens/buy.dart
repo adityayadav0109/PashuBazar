@@ -17,61 +17,74 @@ class _BuyPageState extends State<BuyPage> {
         state: 'Andhra Pradesh',
         price: 1200,
         description:
-        'Healthy and good milk yield, highly recommended for dairy farming.'),
+        'Healthy and good milk yield, highly recommended for dairy farming.',
+         imageUrl: 'https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcR0sbAMUjKGBTfes5pT4vQkIbvJn_LBAbHEjwYEUs0jhTciy3oMfguZmUYFVMNfrIwfzzyT9DTSFVZB91Q',),
+
+
+
     Animal(
         name: 'Nellore Bull',
         state: 'Andhra Pradesh',
         price: 1500,
         description:
-        'One of the best breeds for meat production, highly recommended for beef production.'),
+        'One of the best breeds for meat production, highly recommended for beef production.',
+        imageUrl: 'https://diligentias.com/wp-content/uploads/2019/05/ongoel_bull.jpg',),
     Animal(
         name: 'Murrah Buffalo',
         state: 'Haryana',
         price: 2200,
         description:
-        'Healthy and good milk yield, highly recommended for dairy farming.'),
+        'Healthy and good milk yield, highly recommended for dairy farming.',
+        imageUrl: 'https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcSFshILfHTKgo7xaAOMzEjQKWZGwZeTOAM-z9zXf7nsMPOPiPloMbwFoN3c5uZDyph1hiFyjuwQPPtmj8w',),
     Animal(
         name: 'Gir Cow',
         state: 'Gujarat',
         price: 1700,
         description:
-        'Healthy and good milk yield, highly recommended for dairy farming.'),
+        'Healthy and good milk yield, highly recommended for dairy farming.',
+          imageUrl: 'https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcQIeDGmAMfnvj14SFputrVh914xOhNvoKIeb-MjPCw4TGlzQLtNsNoLcNDpmBuaiSXstyh80LKlw0z1R0k',),
     Animal(
         name: 'Osmanabadi Goat',
         state: 'Maharashtra',
         price: 500,
         description:
-        'Good for meat and milk, highly recommended for small scale farming.'),
+        'Good for meat and milk, highly recommended for small scale farming.',
+        imageUrl: 'https://www.goatfarming.in/wp-content/uploads/2016/04/Osmanabadi-Goat-Male.jpg',),
     Animal(
         name: 'Kangayam Cow',
         state: 'Tamil Nadu',
         price: 2000,
         description:
-        'Healthy and good milk yield, highly recommended for dairy farming.'),
+        'Healthy and good milk yield, highly recommended for dairy farming.',
+        imageUrl: 'https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcSwjsFlY_gQdsUQbnbGUBfSZHcnfgdegVA2vR3a7Y91z24QtJzfee--e_MEnj_tgwdd7DYX89yBxxQnFbI',),
     Animal(
         name: 'Murciana Goat',
         state: 'Uttar Pradesh',
         price: 800,
         description:
-        'Good for meat and milk, highly recommended for small scale farming.'),
+        'Good for meat and milk, highly recommended for small scale farming.',
+        imageUrl: 'https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSvzuQrQnEZ8v7Aco8TM70vZ4zvyqwXtA-PGc0NAfJHmJbYe6oRl-oHQDPz1nzlyD5xnyYFW69uwUlq2T0',),
     Animal(
         name: 'Kundhi Buffalo',
         state: 'Odisha',
         price: 2500,
         description:
-        'Healthy and good milk yield, highly recommended for dairy farming.'),
+        'Healthy and good milk yield, highly recommended for dairy farming.',
+        imageUrl: 'https://i.ytimg.com/vi/_LdwZ4D_rzY/maxresdefault.jpg',),
     Animal(
         name: 'Kankrej Cow',
         state: 'Rajasthan',
         price: 1800,
         description:
-        'Healthy and good milk yield, highly recommended for dairy farming.'),
+        'Healthy and good milk yield, highly recommended for dairy farming.',
+        imageUrl: 'https://cpimg.tistatic.com/05213154/b/4/Kankrej-Cow.jpg',),
     Animal(
-        name: 'Hill Myna',
-        state: 'West Bengal',
-        price: 100,
+        name: 'Jersey Cow',
+        state: 'Uttar Pradesh',
+        price: 10000,
         description:
-        'Known for its ability to mimic human speech, highly recommended for pet lovers.'),
+        'Known for its ability to mimic human speech, highly recommended for pet lovers.',
+        imageUrl: "https://cpimg.tistatic.com/05847268/b/4/Desi-Jersey-Cow.jpg",),
   ];
 
   String _selectedState = 'All';

@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 
   const HomePage({Key? key, required this.preferences, required this.currentUser, required this.email}) : super(key: key);
 
-
+  //this is the code which is added to new branch
 
 
   @override

@@ -6,17 +6,17 @@ import 'package:pashubazar/screens/sell.dart';
 import 'package:pashubazar/screens/profile.dart';
 import 'package:pashubazar/screens/settings.dart';
 import 'package:pashubazar/screens/sign_in.dart';
+import 'package:pashubazar/screens/chats.dart';
+import 'package:pashubazar/screens/deals.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
 
 class HomePage extends StatefulWidget {
-  final preferences;
-
-  final currentUser;
+  final SharedPreferences preferences;
+  final User currentUser;
   final String email;
 
   const HomePage({Key? key, required this.preferences, required this.currentUser, required this.email}) : super(key: key);
-
-  //this is the code which is added to new branch
-  //hello bhai
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -25,6 +25,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late SharedPreferences _preferences;
   late User _currentUser;
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    HomeWidget(),
+    ChatsPage(),
+    DealsPage(),
+  ];
 
   @override
   void initState() {
@@ -43,40 +50,28 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Pashubazar'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // const Text(
-            //   'Hi,',
-            //   style: TextStyle(fontSize: 24),
-            // ),
-            // Text(
-            //   '${_currentUser.username}',
-            //   style: const TextStyle(fontSize: 18),
-            // ),
-            // const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) =>  SellPage()),
-                );
-              },
-              child: const Text('Sell'),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const BuyPage()),
-                );
-              },
-              child: const Text('Buy'),
-            ),
-          ],
-        ),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chats',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_offer),
+            label: 'Deals',
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -87,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.blue,
               ),
               child: Text(
-                'Hello Aditya!',
+                'Hello User!',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -135,6 +130,43 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class HomeWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          // const Text(
+          //   'Home Page',
+          //   style: TextStyle(fontSize: 24),
+          // ),
+          const SizedBox(height: 12),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SellPage()),
+              );
+            },
+            child: const Text('Sell'),
+          ),
+          const SizedBox(height: 12),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BuyPage()),
+              );
+            },
+            child: const Text('Buy'),
+          ),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pashubazar/models/animal.dart';
+import 'package:pashubazar/screens/offerchat.dart';
 
 class AnimalDetailPage extends StatefulWidget {
   final Animal animal;
@@ -12,6 +13,7 @@ class AnimalDetailPage extends StatefulWidget {
 
 class _AnimalDetailPageState extends State<AnimalDetailPage> {
   double _selectedPrice = 0;
+  String _offerMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -69,23 +71,16 @@ class _AnimalDetailPageState extends State<AnimalDetailPage> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Offer made'),
-                              content: Text(
-                                  'Your offer of ₹ ${_selectedPrice.toStringAsFixed(2)} has been made.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                        double offerPrice = _selectedPrice;
+                        _offerMessage = 'I am interested and my offer price is ₹${offerPrice.toStringAsFixed(2)}';
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnimalChatPage(
+                              selectedPrice: _selectedPrice,
+                              initialMessage: _offerMessage,
+                            ),
+                          ),
                         );
                       },
                       child: Text('Make offer'),

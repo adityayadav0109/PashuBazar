@@ -10,13 +10,17 @@ import 'package:pashubazar/screens/chats.dart';
 import 'package:pashubazar/screens/deals.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-
 class HomePage extends StatefulWidget {
   final SharedPreferences preferences;
   final User currentUser;
   final String email;
 
-  const HomePage({Key? key, required this.preferences, required this.currentUser, required this.email}) : super(key: key);
+  const HomePage({
+    Key? key,
+    required this.preferences,
+    required this.currentUser,
+    required this.email,
+  }) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -50,7 +54,20 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Pashubazar'),
       ),
-      body: _pages[_currentIndex],
+      body: Column(
+        children: [
+          Expanded(
+            child: ImageCarousel(),
+          ),
+          const SizedBox(height: 12),
+          Expanded(
+            child: IndexedStack(
+              index: _currentIndex,
+              children: _pages,
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -95,7 +112,10 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(preferences: _preferences)),
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ProfilePage(preferences: _preferences),
+                  ),
                 );
               },
             ),
@@ -105,7 +125,10 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SettingsPage(preferences: _preferences)),
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        SettingsPage(preferences: _preferences),
+                  ),
                 );
               },
             ),
@@ -120,17 +143,59 @@ class _HomePageState extends State<HomePage> {
                 // Navigate back to the SignInPage and replace the current route
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => SignInPage(
-                    onUserSaved: (user) {
-                      // do something when the user is saved
-                    },
-                  ),),
+                  MaterialPageRoute(
+                    builder: (context) => SignInPage(
+                      onUserSaved: (user) {
+                        // do something when the user is saved
+                      },
+                    ),
+                  ),
                 );
               },
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ImageCarousel extends StatelessWidget {
+  final List<String> imageUrls = [
+    'assets/images/1.jpg',
+    'assets/images/2.jpg',
+    'assets/images/3.jpg',
+    'assets/images/4.jpg',
+    'assets/images/5.jpg',
+    'assets/images/6.jpg',
+    'assets/images/7.jpg',
+    'assets/images/8.jpg',
+    // Add more image URLs here
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 200.0,
+        viewportFraction: 0.9,
+        enlargeCenterPage: true,
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 3),
+      ),
+      items: imageUrls.map((imageUrl) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Image.asset(
+                imageUrl,
+                fit: BoxFit.cover,
+              ),
+            );
+          },
+        );
+      }).toList(),
     );
   }
 }
@@ -142,10 +207,6 @@ class HomeWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          // const Text(
-          //   'Home Page',
-          //   style: TextStyle(fontSize: 24),
-          // ),
           const SizedBox(height: 12),
           ElevatedButton(
             onPressed: () {
